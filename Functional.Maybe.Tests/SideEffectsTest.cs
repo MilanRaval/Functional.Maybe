@@ -13,6 +13,7 @@ namespace Functional.Maybe.Tests
 			Maybe<string>.Nothing.Do(_ => target = "changed");
 			Assert.AreEqual("unchanged", target);
 		}
+
 		[TestMethod]
 		public void DoOnSomething_DoesSomething()
 		{
@@ -21,7 +22,23 @@ namespace Functional.Maybe.Tests
 			Assert.AreEqual("changed", target);
 		}
 
-		[TestMethod]
+        [TestMethod]
+        public void DoWhenTrueOnSomething_DoesNothingWhenFalse()
+        {
+            var target = "unchanged";
+            "changed".ToMaybe().DoWhenTrue(_ => 1 == 2, _ => target = "changed");
+            Assert.AreEqual("unchanged", target);
+        }
+
+        [TestMethod]
+        public void DoWhenTrueOnSomething_DoesNothingWhenTrue()
+        {
+            var target = "unchanged";
+            "changed".ToMaybe().DoWhenTrue(_ => 1 == 1, _ => target = "changed");
+            Assert.AreEqual("changed", target);
+        }
+
+        [TestMethod]
 		public void MatchOnNothing_MatchesNothing()
 		{
 			var target1 = "unchanged";
